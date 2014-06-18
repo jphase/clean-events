@@ -1,9 +1,11 @@
 /* Utility classes */
 	.hide { display: none; }
+	.left { float: left; }
+	.right { float: right; }
 	.pointer { cursor: pointer; }
 
 /* Content */
 	#event-details h4 {
-		border: 1px solid #ccc;
-		padding: .8rem;
+		border: 1px solid #ddd;
+		padding: .5rem;
 	}

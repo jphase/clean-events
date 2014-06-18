@@ -34,7 +34,7 @@ function ce_event_details() {
 			<div class="handlediv" title="Click to toggle"><br></div>
 			<h3 class="hndle"><span><?php echo __( 'Event Details' ); ?></span></h3>
 			<div class="inside">
-				<h4 class="pointer open">Event Date and Time</h4>
+				<h4 class="pointer open">Event Date and Time <div class="dashicons dashicons-arrow-down right"></div></h4>
 				<div class="section">
 					<label for="ce_start"><?php echo __( 'Event Start:', 'clean_events' ); ?></label>
 					<input type="text" id="ce_start" name="ce_start" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_start', true ) ); ?>" class="datetime" size="35">
@@ -43,7 +43,7 @@ function ce_event_details() {
 					<label for="ce_cost"><?php echo __( 'Event Cost:', 'clean_events' ); ?></label>
 					<input type="text" id="ce_cost" name="ce_cost" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_cost', true ) ); ?>" size="35">
 				</div>
-				<h4 class="pointer">Something Else</h4>
+				<h4 class="pointer">Something Else  <div class="dashicons dashicons-arrow-up right"></div></h4>
 				<div class="section hide">
 					OMG WTF BBQ
 				</div>
