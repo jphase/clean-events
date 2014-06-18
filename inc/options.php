@@ -1,0 +1,4 @@
+<?php
+/*
+ *	Clean Events Options
+ */
