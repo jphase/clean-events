@@ -1,6 +1,6 @@
 <?php
 /**
- * This class handles everything with the clean_event post type
+ * This is currently a placeholder class... it will probably handle views or something
  *
  * PHP version 5.3
  *
@@ -13,6 +13,6 @@ namespace CleanEvent\Admin;
 
 class Setup {
 
-	
+
 
 }

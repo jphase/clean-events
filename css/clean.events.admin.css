@@ -1,0 +1,9 @@
+/* Utility classes */
+	.hide { display: none; }
+	.pointer { cursor: pointer; }
+
+/* Content */
+	#event-details h4 {
+		border: 1px solid #ccc;
+		padding: .8rem;
+	}

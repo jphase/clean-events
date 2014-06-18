@@ -16,6 +16,15 @@ function ce_event_details() {
 	global $post;
 	if($post->post_type != 'clean_event') return;
 
+	// Enqueue styles
+	wp_enqueue_style( 'clean-events-admin', CE_URL . 'css/clean.events.admin.css', false, '1.0');
+	wp_enqueue_style( 'datetime-picker', CE_URL . 'css/jquery.datetimepicker.css', false, '2.2.9');
+
+	// Enqueue scripts
+	wp_enqueue_script( 'datetime-picker', CE_URL . 'js/jquery.datetimepicker.js', array( 'jquery' ), '2.2.9', true );
+	wp_enqueue_script( 'masked-input', CE_URL . 'js/jquery.maskedinput.min.js', array( 'jquery' ), '1.3.1', true );
+	wp_enqueue_script( 'clean-events-admin', CE_URL . 'js/clean.events.admin.js', array( 'jquery', 'datetime-picker', 'masked-input' ), '1.0', true );
+
 	// Add an nonce field so we can check for it later.
 	wp_nonce_field( 'ce_event_details', 'ce_event_details_nonce' );
 ?>
@@ -25,8 +34,19 @@ function ce_event_details() {
 			<div class="handlediv" title="Click to toggle"><br></div>
 			<h3 class="hndle"><span><?php echo __( 'Event Details' ); ?></span></h3>
 			<div class="inside">
-				<label for="ce_cost"><?php echo __( 'Event Cost:', 'clean_events' ); ?></label>
-				<input type="text" id="ce_cost" name="ce_cost" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_cost', true ) ); ?>" size="35">
+				<h4 class="pointer open">Event Date and Time</h4>
+				<div class="section">
+					<label for="ce_start"><?php echo __( 'Event Start:', 'clean_events' ); ?></label>
+					<input type="text" id="ce_start" name="ce_start" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_start', true ) ); ?>" class="datetime" size="35">
+					<label for="ce_end"><?php echo __( 'Event End:', 'clean_events' ); ?></label>
+					<input type="text" id="ce_end" name="ce_end" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_end', true ) ); ?>" class="datetime" size="35">
+					<label for="ce_cost"><?php echo __( 'Event Cost:', 'clean_events' ); ?></label>
+					<input type="text" id="ce_cost" name="ce_cost" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_cost', true ) ); ?>" size="35">
+				</div>
+				<h4 class="pointer">Something Else</h4>
+				<div class="section hide">
+					OMG WTF BBQ
+				</div>
 			</div>
 		</div>
 	</div>
