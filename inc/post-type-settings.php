@@ -1,6 +1,6 @@
 <?php
 /**
- * This file handles all admin settings in the clean_event post type
+ * This file handles all post type settings in the clean_event post type
  *
  * PHP version 5.3
  *
@@ -41,6 +41,10 @@ function ce_event_details() {
 				<div class="section">
 					<table>
 						<tbody>
+							<tr>
+								<td><label for="ce_all_day"><?php echo __( 'All day event:', 'clean_events' ); ?></label></td>
+								<td><input type="checkbox" id="ce_all_day" name="ce_all_day" <?php checked( 'on', get_post_meta( $post->ID, '_ce_all_day' )[0] ); ?>></td>
+							</tr>
 							<tr>
 								<td><label for="ce_start_date"><?php echo __( 'Start date / time:', 'clean_events' ); ?></label></td>
 								<td>
@@ -94,8 +98,11 @@ function ce_event_details_save( $post_id ) {
 	if ( !current_user_can( 'edit_post', $post_id ) ) return;
 
 	// Update the meta for this post
-	update_post_meta( $post_id, '_ce_start', sanitize_text_field( $_POST['ce_start'] ) );
-	update_post_meta( $post_id, '_ce_end', sanitize_text_field( $_POST['ce_end'] ) );
+	update_post_meta( $post_id, '_ce_all_day', sanitize_text_field( $_POST['ce_all_day'] ) );
+	update_post_meta( $post_id, '_ce_start_date', sanitize_text_field( $_POST['ce_start_date'] ) );
+	update_post_meta( $post_id, '_ce_start_time', sanitize_text_field( $_POST['ce_start_time'] ) );
+	update_post_meta( $post_id, '_ce_end_date', sanitize_text_field( $_POST['ce_end_date'] ) );
+	update_post_meta( $post_id, '_ce_end_time', sanitize_text_field( $_POST['ce_end_time'] ) );
 	update_post_meta( $post_id, '_ce_cost', sanitize_text_field( $_POST['ce_cost'] ) );
 
 }

@@ -21,4 +21,15 @@ jQuery(document).ready(function($) {
 		formatTime: 'g:ia'
 	});
 
+	// Toggle time pickers on all day event
+	$('#ce_all_day').on('click', function() {
+		if($(this).is(':checked')) {
+			$('.timepicker').fadeOut();
+			$('.datepicker').animate({width: '189px'}, 1000);
+		} else {
+			$('.datepicker').animate({width: '104px'}, 1000);
+			$('.timepicker').fadeIn();
+		}
+	});
+
 });
