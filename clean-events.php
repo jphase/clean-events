@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Clean Events
- * Plugin URI: http://robido.com/clean_events
+ * Plugin URI: http://robido.com/clean-events
  * Description: This is an event calendar plugin for the appreciators of simple and fast code with minimalist design concepts. It uses native WP tables and is designed specifically for those who hate bloatware and bad design.
  * Version: 1.0.0
  * Author: robido
@@ -16,18 +16,19 @@
  * @author     Jeff Hays (jphase) <jeff@robido.com>
  */
 
-// Define default namespace
-namespace CleanEvent;
+// Define namespace
+namespace CleanEvents;
 
 // Block direct access
 if ( !defined('ABSPATH') ) {
 	die( 'Sorry, no script kiddies allowed...' );
 }
 
-// Define global constants
-define( 'CE_URL', plugin_dir_url(__FILE__)) ;
-define( 'CE_PATH', plugin_dir_path(__FILE__) );
-define( 'CE_VERSION', '1.0.0' );
+// Define constants
+define( __NAMESPACE__ . '\NS', __NAMESPACE__ . '\\' );
+define( NS . 'URL', plugin_dir_url(__FILE__) );
+define( NS . 'PATH', plugin_dir_path(__FILE__) );
+define( NS . 'VERSION', '1.0.0' );
 
 // Check for required version of PHP
 if ( version_compare(PHP_VERSION, '5.3', '<') ) {

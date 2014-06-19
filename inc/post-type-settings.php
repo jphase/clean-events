@@ -9,6 +9,9 @@
  * @author     Jeff Hays (jphase) <jeff@robido.com>
  */
 
+// Define namespace
+namespace CleanEvents;
+
 // Render event details section on custom post type
 function ce_event_details() {
 
@@ -17,13 +20,13 @@ function ce_event_details() {
 	if($post->post_type != 'clean_event') return;
 
 	// Enqueue styles
-	wp_enqueue_style( 'clean-events-admin', CE_URL . 'css/clean.events.admin.css', false, '1.0');
-	wp_enqueue_style( 'datetime-picker', CE_URL . 'css/jquery.datetimepicker.css', false, '2.2.9');
+	wp_enqueue_style( 'clean-events-admin', constant( NS . 'URL' ) . 'css/clean.events.admin.css', false, '1.0');
+	wp_enqueue_style( 'datetime-picker', constant( NS . 'URL' ) . 'css/jquery.datetimepicker.css', false, '2.2.9');
 
 	// Enqueue scripts
-	wp_enqueue_script( 'datetime-picker', CE_URL . 'js/jquery.datetimepicker.js', array( 'jquery' ), '2.2.9', true );
-	wp_enqueue_script( 'masked-input', CE_URL . 'js/jquery.maskedinput.min.js', array( 'jquery' ), '1.3.1', true );
-	wp_enqueue_script( 'clean-events-admin', CE_URL . 'js/clean.events.admin.js', array( 'jquery', 'datetime-picker', 'masked-input' ), '1.0', true );
+	wp_enqueue_script( 'datetime-picker', constant( NS . 'URL' ) . 'js/jquery.datetimepicker.js', array( 'jquery' ), '2.2.9', true );
+	wp_enqueue_script( 'masked-input', constant( NS . 'URL' ) . 'js/jquery.maskedinput.min.js', array( 'jquery' ), '1.3.1', true );
+	wp_enqueue_script( 'clean-events-admin', constant( NS . 'URL' ) . 'js/clean.events.admin.js', array( 'jquery', 'datetime-picker', 'masked-input' ), '1.0', true );
 
 	// Add an nonce field so we can check for it later.
 	wp_nonce_field( 'ce_event_details', 'ce_event_details_nonce' );
@@ -34,16 +37,40 @@ function ce_event_details() {
 			<div class="handlediv" title="Click to toggle"><br></div>
 			<h3 class="hndle"><span><?php echo __( 'Event Details' ); ?></span></h3>
 			<div class="inside">
-				<h4 class="pointer open">Event Date and Time <div class="dashicons dashicons-arrow-down right"></div></h4>
+				<h4 class="pointer open"><div class="dashicons dashicons-clock"></div> Date and Time <div class="dashicons dashicons-arrow-down right"></div></h4>
 				<div class="section">
-					<label for="ce_start"><?php echo __( 'Event Start:', 'clean_events' ); ?></label>
-					<input type="text" id="ce_start" name="ce_start" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_start', true ) ); ?>" class="datetime" size="35">
-					<label for="ce_end"><?php echo __( 'Event End:', 'clean_events' ); ?></label>
-					<input type="text" id="ce_end" name="ce_end" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_end', true ) ); ?>" class="datetime" size="35">
-					<label for="ce_cost"><?php echo __( 'Event Cost:', 'clean_events' ); ?></label>
-					<input type="text" id="ce_cost" name="ce_cost" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_cost', true ) ); ?>" size="35">
+					<table>
+						<tbody>
+							<tr>
+								<td><label for="ce_start_date"><?php echo __( 'Start date / time:', 'clean_events' ); ?></label></td>
+								<td>
+									<input type="text" id="ce_start_date" name="ce_start_date" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_start_date', true ) ); ?>" class="datepicker">
+									<input type="text" id="ce_start_time" name="ce_start_time" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_start_time', true ) ); ?>" class="timepicker">
+								</td>
+							</tr>
+							<tr>
+								<td><label for="ce_end_date"><?php echo __( 'End date / time:', 'clean_events' ); ?></label></td>
+								<td>
+									<input type="text" id="ce_end_date" name="ce_end_date" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_end_date', true ) ); ?>" class="datepicker">
+									<input type="text" id="ce_end_time" name="ce_end_time" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_end_time', true ) ); ?>" class="timepicker">
+								</td>
+							</tr>
+							<tr>
+								<td><label for="ce_cost"><?php echo __( 'Event Cost:', 'clean_events' ); ?></label></td>
+								<td><input type="text" id="ce_cost" name="ce_cost" value="<?php echo esc_attr( get_post_meta( $post->ID, '_ce_cost', true ) ); ?>"></td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				<h4 class="pointer">Something Else  <div class="dashicons dashicons-arrow-up right"></div></h4>
+				<h4 class="pointer"><div class="dashicons dashicons-location"></div> Location <div class="dashicons dashicons-arrow-up right"></div></h4>
+				<div class="section hide">
+					OMG WTF BBQ
+				</div>
+				<h4 class="pointer"><div class="dashicons dashicons-tickets"></div> Cost and Tickets <div class="dashicons dashicons-arrow-up right"></div></h4>
+				<div class="section hide">
+					OMG WTF BBQ
+				</div>
+				<h4 class="pointer"><div class="dashicons dashicons-megaphone"></div> Contact Information <div class="dashicons dashicons-arrow-up right"></div></h4>
 				<div class="section hide">
 					OMG WTF BBQ
 				</div>
@@ -55,7 +82,7 @@ function ce_event_details() {
 }
 
 // Add event settings after title area
-add_action( 'edit_form_after_title', 'ce_event_details' );
+add_action( 'edit_form_after_title', NS . 'ce_event_details' );
 
 // Save event details section on custom post type
 function ce_event_details_save( $post_id ) {
@@ -67,9 +94,11 @@ function ce_event_details_save( $post_id ) {
 	if ( !current_user_can( 'edit_post', $post_id ) ) return;
 
 	// Update the meta for this post
+	update_post_meta( $post_id, '_ce_start', sanitize_text_field( $_POST['ce_start'] ) );
+	update_post_meta( $post_id, '_ce_end', sanitize_text_field( $_POST['ce_end'] ) );
 	update_post_meta( $post_id, '_ce_cost', sanitize_text_field( $_POST['ce_cost'] ) );
 
 }
 
 // Call event settings save function on save
-add_action( 'save_post', 'ce_event_details_save' );
+add_action( 'save_post', NS . 'ce_event_details_save' );

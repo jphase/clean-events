@@ -7,7 +7,18 @@ jQuery(document).ready(function($) {
 		$(this).addClass('open').children('.dashicons').removeClass('dashicons-arrow-up').addClass('dashicons-arrow-down').parent().next().stop().slideToggle();
 	});
 
-	// Add datetime pickers
-	$('.datetime').datetimepicker();
+	// Add date pickers
+	$('.datepicker').datetimepicker({
+		timepicker: false,
+		format: 'n/j/Y'
+	});
+
+	// Add time pickers
+	$('.timepicker').datetimepicker({
+		datepicker: false,
+		step: 30,
+		format: 'g:ia',
+		formatTime: 'g:ia'
+	});
 
 });

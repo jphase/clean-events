@@ -9,3 +9,13 @@
 		border: 1px solid #ddd;
 		padding: .5rem;
 	}
+	#event-details table td:first-child {
+		text-align: right;
+		padding-right: 15px;
+	}
+	#event-details .datepicker {
+		width: 104px;
+	}
+	#event-details .timepicker {
+		width: 80px;
+	}

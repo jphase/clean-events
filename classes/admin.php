@@ -9,7 +9,7 @@
  * @author     Jeff Hays (jphase) <jeff@robido.com>
  */
 
-namespace CleanEvent\Admin;
+namespace CleanEvents\Admin;
 
 class Setup {
 
