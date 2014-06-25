@@ -32,7 +32,7 @@ define( NS . 'VERSION', '1.0.0' );
 
 // Check for required version of PHP
 if ( version_compare(PHP_VERSION, '5.3', '<') ) {
-	if ( is_admin() && (!defined('DOING_AJAX') || !DOING_AJAX) ) {
+	if ( is_admin() && ( !defined('DOING_AJAX') || !DOING_AJAX ) ) {
 		require_once ABSPATH . '/wp-admin/includes/plugin.php';
 		deactivate_plugins( __FILE__ );
 		wp_die( __('Clean events requires PHP 5.3 or higher. You currently have PHP ' . PHP_VERSION . ' installed. <a href="' . admin_url('plugins.php') . '">&laquo; Go back to plugins page</a>', 'clean_events') );
@@ -41,7 +41,7 @@ if ( version_compare(PHP_VERSION, '5.3', '<') ) {
 
 // Autoload classes and includes
 function ce_autoload() {
-	$init = glob ( dirname ( __FILE__ ) . '/inc/*.php' );
+	$init = glob( dirname ( __FILE__ ) . '/inc/*.php' );
 	$classes = glob( dirname( __FILE__ ) . '/classes/*.php' );
 	foreach ( $init as $script ) require_once $script;
 	foreach ( $classes as $class ) require_once $class;
