@@ -124,7 +124,10 @@ class Settings {
 		// Enqueue scripts
 		\wp_enqueue_script( 'datetime-picker', \CleanEvents\URL . 'js/jquery.datetimepicker.js', array( 'jquery' ), '2.2.9', true );
 		\wp_enqueue_script( 'masked-input', \CleanEvents\URL . 'js/jquery.maskedinput.min.js', array( 'jquery' ), '1.3.1', true );
-		\wp_enqueue_script( 'clean-events-admin', \CleanEvents\URL . 'js/post-type.js', array( 'jquery', 'datetime-picker', 'masked-input' ), '1.0', true );
+		\wp_enqueue_script( 'clean-events-admin', \CleanEvents\URL . 'js/admin.js', array( 'jquery', 'datetime-picker', 'masked-input' ), '1.0', true );
+
+		// Localize scripts
+		\wp_localize_script( 'clean-events-admin', 'settings', $this->get_js_settings() );
 
 		// Add an nonce field so we can check for it later.
 		\wp_nonce_field( 'ce_event_details', 'ce_event_details_nonce' );
@@ -146,15 +149,15 @@ class Settings {
 								<tr>
 									<td><label for="ce_start_date"><?php echo __( 'Start date / time:', 'clean_events' ); ?></label></td>
 									<td>
-										<input type="text" id="ce_start_date" name="ce_start_date" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_start_date', true ) ); ?>" class="datepicker">
-										<input type="text" id="ce_start_time" name="ce_start_time" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_start_time', true ) ); ?>" class="timepicker">
+										<input type="text" id="ce_start_date" name="ce_start_date" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_start_date', true ) ); ?>" class="datepicker" placeholder="Start Date">
+										<input type="text" id="ce_start_time" name="ce_start_time" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_start_time', true ) ); ?>" class="timepicker" placeholder="Start Time">
 									</td>
 								</tr>
 								<tr>
 									<td><label for="ce_end_date"><?php echo __( 'End date / time:', 'clean_events' ); ?></label></td>
 									<td>
-										<input type="text" id="ce_end_date" name="ce_end_date" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_end_date', true ) ); ?>" class="datepicker">
-										<input type="text" id="ce_end_time" name="ce_end_time" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_end_time', true ) ); ?>" class="timepicker">
+										<input type="text" id="ce_end_date" name="ce_end_date" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_end_date', true ) ); ?>" class="datepicker" placeholder="End Date">
+										<input type="text" id="ce_end_time" name="ce_end_time" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_end_time', true ) ); ?>" class="timepicker" placeholder="End Time">
 									</td>
 								</tr>
 								<tr>
@@ -199,6 +202,26 @@ class Settings {
 		\update_post_meta( $post_id, '_ce_end_date', \sanitize_text_field( $_POST['ce_end_date'] ) );
 		\update_post_meta( $post_id, '_ce_end_time', \sanitize_text_field( $_POST['ce_end_time'] ) );
 		\update_post_meta( $post_id, '_ce_cost', \sanitize_text_field( $_POST['ce_cost'] ) );
+
+	}
+
+	// Build object of settings needed in JS
+	function get_js_settings() {
+
+		// JS object
+		$obj = new \stdClass;
+
+		// Time object
+		$obj->time = new \stdClass;
+		$obj->time->hours = (bool) \get_option( 'clean_events_12_hour' );
+		$obj->time->format = \get_option( 'clean_events_time_format' );
+		$obj->time->step = (int) \get_option( 'clean_events_time_step' );
+
+		// Date object
+		$obj->date = new \stdClass;
+		$obj->date->format = \get_option( 'clean_events_date_format' );
+
+		return $obj;
 
 	}
 

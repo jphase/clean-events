@@ -10,15 +10,16 @@ jQuery(document).ready(function($) {
 	// Add date pickers
 	$('.datepicker').datetimepicker({
 		timepicker: false,
-		format: 'n/j/Y'
+		format: settings.date.format
 	});
 
 	// Add time pickers
 	$('.timepicker').datetimepicker({
 		datepicker: false,
-		step: 30,
-		format: 'g:ia',
-		formatTime: 'g:ia'
+		step: settings.time.step,
+		format: settings.time.format,
+		formatTime: settings.time.format,
+		hours12: settings.time.hours
 	});
 
 	// Toggle time pickers on all day event
