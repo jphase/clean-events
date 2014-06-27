@@ -19,6 +19,9 @@ class Widget extends \WP_Widget {
     }
 
     function widget( $args, $instance ) {
+
+        // Enqueue styles
+        \wp_enqueue_style( 'clndr', \CleanEvents\URL . 'css/clndr.css' );
         
         // Enqueue scripts
         \wp_enqueue_script( 'moment', \CleanEvents\URL . 'js/moment.min.js', false, '2.7.0', true );
@@ -28,6 +31,9 @@ class Widget extends \WP_Widget {
 
         // Localize scripts
         \wp_localize_script( 'clean-events-widget', 'settings', $this->get_js_settings() );
+
+        // Apply filters to calendar widget container for developers
+        echo \apply_filters( 'ce_calendar_widget_container', '<div class="mini-clndr"></div>' );
 
     }
 

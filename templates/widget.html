@@ -1,19 +1,17 @@
-<div class="clean-events-widget">
-    <div class="clndr-controls">
-        <div class="clndr-previous-button">&lsaquo;</div>
-        <div class="month"><%= month %></div>
-        <div class="clndr-next-button">&rsaquo;</div>
+<div class="controls">
+    <div class="previous">&lsaquo;</div>
+    <div class="month"><%= month %></div>
+    <div class="next">&rsaquo;</div>
+</div>
+<div class="weeks">
+    <div class="headers">
+        <% _.each(daysOfTheWeek, function(day) { %>
+            <div class="header"><%= day %></div>
+        <% }); %>
     </div>
-    <div class="clndr-grid">
-        <div class="days-of-the-week">
-            <% _.each(daysOfTheWeek, function(day) { %>
-                <div class="header-day"><%= day %></div>
-            <% }); %>
-            <div class="days">
-                <% _.each(days, function(day) { %>
-                    <div class="<%= day.classes %>"><%= day.day %></div>
-                <% }); %>
-            </div>
-        </div>
+    <div class="days">
+        <% _.each(days, function(day) { %>
+            <div class="<%= day.classes %>"><%= day.day %></div>
+        <% }); %>
     </div>
 </div>
