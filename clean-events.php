@@ -50,7 +50,8 @@ function ce_autoload() {
 // Initialize clean events plugin
 function ce_init() {
 	ce_autoload();
-	$admin = new Admin\Settings;
+	$admin = new Admin;
+	$widget = new Widget;
 }
 
 // Call bootstrap after plugins are loaded

@@ -8,6 +8,7 @@
 	#event-details h4 {
 		border: 1px solid #ddd;
 		padding: .5rem;
+		clear: both;
 	}
 	#event-details table td:first-child {
 		text-align: right;
@@ -18,4 +19,9 @@
 	}
 	#event-details .timepicker {
 		width: 80px;
+	}
+	#map {
+		width: 350px;
+		height: 200px;
+		float: right;
 	}

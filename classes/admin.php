@@ -1,6 +1,7 @@
 <?php
 /**
- * This is currently a placeholder class... which will eventually handle admin settings
+ * This class handles all things in the admin panel. Custom post type,
+ * settings submenu pages, filters, actions, etc.
  *
  * PHP version 5.3
  *
@@ -9,9 +10,9 @@
  * @author     Jeff Hays (jphase) <jeff@robido.com>
  */
 
-namespace CleanEvents\Admin;
+namespace CleanEvents;
 
-class Settings {
+class Admin {
 
 	// Add all actions in our admin class
 	function __construct() {
@@ -34,7 +35,7 @@ class Settings {
 	function display_settings() {
 
 		// Enqueue styles
-		\wp_enqueue_style( 'clean-events-admin', \CleanEvents\URL . 'css/admin.css', false, '1.0');
+		\wp_enqueue_style( 'clean-events-admin', \CleanEvents\URL . 'css/admin.css', false, \CleanEvents\VERSION );
 
 		// Save our settings as needed
 		if ( $_POST ) $this->save_settings();
@@ -47,16 +48,17 @@ class Settings {
 					<div class="post-box-container">
 						<div class="postbox">
 							<div class="handlediv" title="Click to toggle"><br></div>
-							<h3><div class="dashicons dashicons-calendar"></div> Event Settings</h3>
+							<h3><div class="dashicons dashicons-calendar"></div> <?php echo __( 'Event Settings', 'clean_events' ); ?></h3>
 							<div class="inside">
+								<h4><?php echo __( 'Date and Time Picker Options', 'clean_events' ); ?></h4>
 								<table>
 									<tbody>
 										<tr>
 											<td><label for="ce_12_hour"><?php echo __( 'Hour type:', 'clean_events' ); ?></label></td>
 											<td>
 												<select id="ce_12_hour" name="ce_12_hour">
-													<option value="1"<?php \selected( \get_option( 'clean_events_12_hour' ) ); ?>>12 hour</option>
-													<option value="0"<?php \selected( \get_option( 'clean_events_12_hour' ), 0 ); ?>>24 hour</option>
+													<option value="1"<?php \selected( \get_option( 'clean_events_12_hour' ) ); ?>><?php echo __( '12 hour', 'clean_events' ); ?></option>
+													<option value="0"<?php \selected( \get_option( 'clean_events_12_hour' ), 0 ); ?>><?php echo __( '24 hour', 'clean_events' ); ?></option>
 												</select>
 											</td>
 										</tr>
@@ -81,11 +83,11 @@ class Settings {
 					<div class="post-box-container">
 						<div class="postbox">
 							<div class="handlediv" title="Click to toggle"><br></div>
-							<h3><div class="dashicons dashicons-clipboard"></div> General Settings</h3>
+							<h3><div class="dashicons dashicons-clipboard"></div> <?php echo __( 'General Settings', 'clean_events' ); ?></h3>
 						</div>
 					</div>
 
-					<input type="submit" class="button button-primary button-large" value="Save Settings">
+					<input type="submit" class="button button-primary button-large" value="<?php echo __( 'Save Settings', 'clean_events' ); ?>">
 				</div>
 			</div>
 		</form>
@@ -107,6 +109,7 @@ class Settings {
 		\update_option( 'clean_events_time_format', \esc_attr( $_POST['ce_time_format'] ) );
 		\update_option( 'clean_events_time_step', \esc_attr( $_POST['ce_time_step'] ) );
 		\update_option( 'clean_events_date_format', \esc_attr( $_POST['ce_date_format'] ) );
+		\update_option( 'clean_events_date_object', \esc_attr( $_POST['ce_date_object'] ) );
 
 	}
 
@@ -122,9 +125,11 @@ class Settings {
 		\wp_enqueue_style( 'datetime-picker', \CleanEvents\URL . 'css/jquery.datetimepicker.css', false, '2.2.9');
 
 		// Enqueue scripts
+		\wp_enqueue_script( 'jquery-ui-core' );
+		\wp_enqueue_script( 'jquery-ui-autocomplete' );
 		\wp_enqueue_script( 'datetime-picker', \CleanEvents\URL . 'js/jquery.datetimepicker.js', array( 'jquery' ), '2.2.9', true );
-		\wp_enqueue_script( 'masked-input', \CleanEvents\URL . 'js/jquery.maskedinput.min.js', array( 'jquery' ), '1.3.1', true );
-		\wp_enqueue_script( 'clean-events-admin', \CleanEvents\URL . 'js/admin.js', array( 'jquery', 'datetime-picker', 'masked-input' ), '1.0', true );
+		\wp_enqueue_script( 'google-maps', 'https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false&amp;libraries=places', false, false, true );
+		\wp_enqueue_script( 'clean-events-admin', \CleanEvents\URL . 'js/admin.js', array( 'jquery', 'datetime-picker', 'google-maps' ), '1.0', true );
 
 		// Localize scripts
 		\wp_localize_script( 'clean-events-admin', 'settings', $this->get_js_settings() );
@@ -138,7 +143,7 @@ class Settings {
 				<div class="handlediv" title="Click to toggle"><br></div>
 				<h3><span><?php echo __( 'Event Details' ); ?></span></h3>
 				<div class="inside">
-					<h4 class="pointer open"><div class="dashicons dashicons-clock"></div> Date and Time <div class="dashicons dashicons-arrow-down right"></div></h4>
+					<h4 class="pointer open"><div class="dashicons dashicons-clock"></div> <?php echo __( 'Date and Time', 'clean_events' ); ?> <div class="dashicons dashicons-arrow-down right"></div></h4>
 					<div class="section">
 						<table>
 							<tbody>
@@ -167,15 +172,27 @@ class Settings {
 							</tbody>
 						</table>
 					</div>
-					<h4 class="pointer"><div class="dashicons dashicons-location"></div> Location <div class="dashicons dashicons-arrow-up right"></div></h4>
+					<h4 class="pointer"><div class="dashicons dashicons-location"></div> <?php echo __( 'Location', 'clean_events' ); ?> <div class="dashicons dashicons-arrow-up right"></div></h4>
+					<div class="section hide">
+						<table>
+							<tbody>
+								<tr>
+									<td><label for="ce_venue_name"><?php echo __( 'Venue Name:', 'clean_events' ); ?></label></td>
+									<td><input type="text" id="ce_venue_name" name="ce_venue_name" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_venue_name', true ) ); ?>"></td>
+								</tr>
+								<tr>
+									<td><label for="ce_venue_location"><?php echo __( 'Venue Location:', 'clean_events' ); ?></label></td>
+									<td><input type="text" id="ce_venue_location" name="ce_venue_location" value="<?php echo \esc_attr( \get_post_meta( $post->ID, '_ce_venue_location', true ) ); ?>"></td>
+								</tr>
+							</tbody>
+						</table>
+						<div id="map"></div>
+					</div>
+					<h4 class="pointer"><div class="dashicons dashicons-tickets"></div> <?php echo __( 'Cost and Tickets', 'clean_events' ); ?> <div class="dashicons dashicons-arrow-up right"></div></h4>
 					<div class="section hide">
 						OMG WTF BBQ
 					</div>
-					<h4 class="pointer"><div class="dashicons dashicons-tickets"></div> Cost and Tickets <div class="dashicons dashicons-arrow-up right"></div></h4>
-					<div class="section hide">
-						OMG WTF BBQ
-					</div>
-					<h4 class="pointer"><div class="dashicons dashicons-megaphone"></div> Contact Information <div class="dashicons dashicons-arrow-up right"></div></h4>
+					<h4 class="pointer"><div class="dashicons dashicons-megaphone"></div> <?php echo __( 'Contact Information', 'clean_events' ); ?> <div class="dashicons dashicons-arrow-up right"></div></h4>
 					<div class="section hide">
 						OMG WTF BBQ
 					</div>
@@ -190,7 +207,7 @@ class Settings {
 	function event_details_save( $post_id ) {
 
 		// Return if our nonce isn't set, isn't valid, or this is an autosave
-		if ( !isset( $_POST['ce_event_details_nonce'] ) || !\wp_verify_nonce( $_POST['ce_event_details_nonce'], 'ce_event_details' ) || (defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE) ) return;
+		if ( !isset( $_POST['ce_event_details_nonce'] ) || !\wp_verify_nonce( $_POST['ce_event_details_nonce'], 'ce_event_details' ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ) return;
 
 		// Return if the user can't edit posts
 		if ( !\current_user_can( 'edit_post', $post_id ) ) return;
@@ -202,6 +219,8 @@ class Settings {
 		\update_post_meta( $post_id, '_ce_end_date', \sanitize_text_field( $_POST['ce_end_date'] ) );
 		\update_post_meta( $post_id, '_ce_end_time', \sanitize_text_field( $_POST['ce_end_time'] ) );
 		\update_post_meta( $post_id, '_ce_cost', \sanitize_text_field( $_POST['ce_cost'] ) );
+		\update_post_meta( $post_id, '_ce_venue_name', \sanitize_text_field( $_POST['ce_venue_name'] ) );
+		\update_post_meta( $post_id, '_ce_venue_location', \sanitize_text_field( $_POST['ce_venue_location'] ) );
 
 	}
 
@@ -213,13 +232,22 @@ class Settings {
 
 		// Time object
 		$obj->time = new \stdClass;
-		$obj->time->hours = (bool) \get_option( 'clean_events_12_hour' );
+		$obj->time->datepicker = false;
+		$obj->time->hours12 = (bool) \get_option( 'clean_events_12_hour' );
 		$obj->time->format = \get_option( 'clean_events_time_format' );
+		$obj->time->formatTime = \get_option( 'clean_events_time_format' );
 		$obj->time->step = (int) \get_option( 'clean_events_time_step' );
+
+		// Apply a ct_time_picker filter to our time settings for developers
+		$obj->time = \apply_filters( 'ce_time_picker', $obj->time );
 
 		// Date object
 		$obj->date = new \stdClass;
+		$obj->date->timepicker = false;
 		$obj->date->format = \get_option( 'clean_events_date_format' );
+
+		// Apply a ct_date_picker filter to our date settings for developers
+		$obj->date = \apply_filters( 'ce_date_picker', $obj->date );
 
 		return $obj;
 
@@ -243,6 +271,7 @@ class Settings {
 			'not_found'           => __( 'Not found', 'clean_events' ),
 			'not_found_in_trash'  => __( 'Not found in Trash', 'clean_events' ),
 		);
+
 		$args = array(
 			'label'               => __( 'clean_event', 'clean_events' ),
 			'description'         => __( 'Clean Events', 'clean_events' ),
@@ -263,6 +292,7 @@ class Settings {
 			'publicly_queryable'  => true,
 			'capability_type'     => 'page',
 		);
+
 		\register_post_type( 'clean_event', $args );
 
 	}
