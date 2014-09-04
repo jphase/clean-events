@@ -22,7 +22,7 @@ class Widget extends \WP_Widget {
 
         // Enqueue styles
         \wp_enqueue_style( 'clndr', \CleanEvents\URL . 'css/clndr.css' );
-        
+
         // Enqueue scripts
         \wp_enqueue_script( 'moment', \CleanEvents\URL . 'js/moment.min.js', false, '2.7.0', true );
         \wp_enqueue_script( 'underscore', \CleanEvents\URL . 'js/underscore.min.js', false, '1.6.0', true );

@@ -20,7 +20,7 @@
 namespace CleanEvents;
 
 // Block direct access
-if ( !defined('ABSPATH') ) {
+if ( ! defined('ABSPATH') ) {
 	die( 'Sorry, no script kiddies allowed...' );
 }
 
@@ -31,11 +31,11 @@ define( NS . 'PATH', plugin_dir_path(__FILE__) );
 define( NS . 'VERSION', '1.0.0' );
 
 // Check for required version of PHP
-if ( version_compare(PHP_VERSION, '5.3', '<') ) {
-	if ( is_admin() && ( !defined('DOING_AJAX') || !DOING_AJAX ) ) {
+if ( version_compare( PHP_VERSION, '5.3', '<' ) ) {
+	if ( is_admin() && ( ! defined('DOING_AJAX') || ! DOING_AJAX ) ) {
 		require_once ABSPATH . '/wp-admin/includes/plugin.php';
 		deactivate_plugins( __FILE__ );
-		wp_die( __('Clean events requires PHP 5.3 or higher. You currently have PHP ' . PHP_VERSION . ' installed. <a href="' . admin_url('plugins.php') . '">&laquo; Go back to plugins page</a>', 'clean_events') );
+		wp_die( __( 'Clean events requires PHP 5.3 or higher. You currently have PHP ' . PHP_VERSION . ' installed. <a href="' . admin_url('plugins.php') . '">&laquo; Go back to plugins page</a>', 'clean_events' ) );
 	}
 }
 

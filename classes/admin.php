@@ -99,10 +99,10 @@ class Admin {
 	function save_settings() {
 
 		// Return if our nonce isn't set, isn't valid, or this is an autosave
-		if ( !isset( $_POST['ce_nonce'] ) || !\wp_verify_nonce( $_POST['ce_nonce'], 'ce_event_settings' ) ) return;
+		if ( ! isset( $_POST['ce_nonce'] ) || ! \wp_verify_nonce( $_POST['ce_nonce'], 'ce_event_settings' ) ) return;
 
 		// Return if the user can't edit posts
-		if ( !\current_user_can( 'edit_post', $post_id ) ) return;
+		if ( ! \current_user_can( 'edit_post', $post_id ) ) return;
 
 		// Update our settings
 		\update_option( 'clean_events_12_hour', \esc_attr( $_POST['ce_12_hour'] ) );
@@ -118,7 +118,7 @@ class Admin {
 
 		// Only add our event details box on the clean_event post type
 		global $post;
-		if($post->post_type != 'clean_event') return;
+		if ( $post->post_type != 'clean_event' ) return;
 
 		// Enqueue styles
 		\wp_enqueue_style( 'clean-events-admin', \CleanEvents\URL . 'css/admin.css', false, '1.0');
@@ -207,10 +207,10 @@ class Admin {
 	function event_details_save( $post_id ) {
 
 		// Return if our nonce isn't set, isn't valid, or this is an autosave
-		if ( !isset( $_POST['ce_event_details_nonce'] ) || !\wp_verify_nonce( $_POST['ce_event_details_nonce'], 'ce_event_details' ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ) return;
+		if ( ! isset( $_POST['ce_event_details_nonce'] ) || ! \wp_verify_nonce( $_POST['ce_event_details_nonce'], 'ce_event_details' ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ) return;
 
 		// Return if the user can't edit posts
-		if ( !\current_user_can( 'edit_post', $post_id ) ) return;
+		if ( ! \current_user_can( 'edit_post', $post_id ) ) return;
 
 		// Update the meta for this post
 		\update_post_meta( $post_id, '_ce_all_day', \sanitize_text_field( $_POST['ce_all_day'] ) );
